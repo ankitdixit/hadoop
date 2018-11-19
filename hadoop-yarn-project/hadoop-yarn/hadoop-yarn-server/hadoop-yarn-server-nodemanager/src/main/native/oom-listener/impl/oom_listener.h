@@ -79,19 +79,6 @@ typedef struct _oom_listener_descriptors {
 } _oom_listener_descriptors;
 
 /*
- Clean up allocated resources in a descriptor structure
-*/
-inline void cleanup(_oom_listener_descriptors *descriptors) {
-  close(descriptors->event_fd);
-  descriptors->event_fd = -1;
-  close(descriptors->event_control_fd);
-  descriptors->event_control_fd = -1;
-  close(descriptors->oom_control_fd);
-  descriptors->oom_control_fd = -1;
-  descriptors->watch_timeout = 1000;
-}
-
-/*
  * Enable an OOM listener on the memory cgroup cgroup
  * descriptors: Structure that holds state for testing purposes
  * cgroup: cgroup path to watch. It has to be a memory cgroup

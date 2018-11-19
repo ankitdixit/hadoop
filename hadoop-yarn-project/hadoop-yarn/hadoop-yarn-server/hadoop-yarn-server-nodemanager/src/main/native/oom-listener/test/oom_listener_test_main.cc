@@ -43,6 +43,19 @@ extern "C" {
 // to mock cgroup
 static const char *cgroup_candidates[] = { CGROUP_ROOT, TEST_ROOT };
 
+/*
+ Clean up allocated resources in a descriptor structure
+*/
+void cleanup(_oom_listener_descriptors *descriptors) {
+  close(descriptors->event_fd);
+  descriptors->event_fd = -1;
+  close(descriptors->event_control_fd);
+  descriptors->event_control_fd = -1;
+  close(descriptors->oom_control_fd);
+  descriptors->oom_control_fd = -1;
+  descriptors->watch_timeout = 1000;
+}
+
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

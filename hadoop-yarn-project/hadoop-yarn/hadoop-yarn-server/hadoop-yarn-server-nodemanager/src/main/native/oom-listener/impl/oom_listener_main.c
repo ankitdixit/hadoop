@@ -25,6 +25,19 @@
 
 #include "oom_listener.h"
 
+/*
+ Clean up allocated resources in a descriptor structure
+*/
+void cleanup(_oom_listener_descriptors *descriptors) {
+  close(descriptors->event_fd);
+  descriptors->event_fd = -1;
+  close(descriptors->event_control_fd);
+  descriptors->event_control_fd = -1;
+  close(descriptors->oom_control_fd);
+  descriptors->oom_control_fd = -1;
+  descriptors->watch_timeout = 1000;
+}
+
 void print_usage(void) {
   fprintf(stderr, "oom-listener");
   fprintf(stderr, "Listen to OOM events in a cgroup");
@@ -92,6 +105,8 @@ int main(int argc, char *argv[]) {
 }
 
 #else
+
+
 
 /*
  This tool uses Linux specific functionality,
